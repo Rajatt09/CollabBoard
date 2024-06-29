@@ -9,9 +9,7 @@ const addItem = async (req, res) => {
     const filePath = req.file?.path;
 
     if (!filePath) {
-      return res
-        .status(500)
-        .json(new ApiError(500, "Failure in Uploading file"));
+      return res.status(400).json(new ApiError(400, "No file path received"));
     }
 
     const new_item = new Item({
@@ -24,7 +22,7 @@ const addItem = async (req, res) => {
     if (!result) {
       return res
         .status(400)
-        .json(new ApiError(500, "item not added to database"));
+        .json(new ApiError(400, "item not added to database"));
     }
 
     return res
