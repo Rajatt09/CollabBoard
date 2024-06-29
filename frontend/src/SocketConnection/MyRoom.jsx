@@ -255,14 +255,18 @@ const MyRoom = () => {
     try {
       const updatedStream = myStream.clone();
 
-      peerConnections.forEach((peer) => {
-        if (peer.peerConnection.signalingState !== "closed") {
-          const videoSender = peer.videoSender;
+      Object.values(peers.current).forEach((peer) => {
+        if (peer.signalingState !== "closed") {
+          const videoSender = peer
+            .getSenders()
+            .find((s) => s.track.kind === "video");
           if (videoSender) {
             videoSender.replaceTrack(updatedStream.getVideoTracks()[0]);
           }
 
-          const audioSender = peer.audioSender;
+          const audioSender = peer
+            .getSenders()
+            .find((s) => s.track.kind === "audio");
           if (audioSender) {
             audioSender.replaceTrack(updatedStream.getAudioTracks()[0]);
           }
@@ -492,10 +496,6 @@ const MyRoom = () => {
 
   useEffect(() => {
     getUserMediaStream();
-
-    return () => {
-      cleanupMediaStreams();
-    };
   }, []);
 
   const handleUserRequest = async (id, roomId, name, email, status) => {
