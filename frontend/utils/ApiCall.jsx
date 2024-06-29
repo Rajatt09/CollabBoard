@@ -2,9 +2,8 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { updateUserinfo } from "../utils/counterSlice.js";
 
-async function ApiCall(url, httpMethod, data) {
-  const dispatch = useDispatch();
-  const token = Cookies.get("AccessToken");
+async function ApiCall(url, httpMethod, data, dispatch) {
+  // const dispatch = useDispatch();
 
   try {
     if (httpMethod === "GET") {
@@ -17,19 +16,21 @@ async function ApiCall(url, httpMethod, data) {
       return response;
     }
   } catch (error) {
+    dispatch(
+      updateUserinfo({
+        email: "",
+        phone: "",
+        joined: "",
+        show: false,
+      })
+    );
     console.error("Error in API call:", error);
     if (error.response) {
       const errorMessage = error.response.data.message;
+      let checkmessage;
       if (errorMessage === "Unauthorized request" || "Invalid Access Token") {
         console.error("Error from backend:", errorMessage);
-        dispatch(
-          updateUserinfo({
-            email: "",
-            phone: "",
-            joined: "",
-            show: false,
-          })
-        );
+        checkmessage = errorMessage;
         // window.location.href = "/";
       }
     } else if (error.request) {

@@ -23,7 +23,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
-        <GoogleOAuthProvider clientId="476507831071-k6jpckrm0luapjd73gdbb3iue1pjrahi.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
           <App />
         </GoogleOAuthProvider>
       </Provider>

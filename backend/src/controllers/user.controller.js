@@ -163,6 +163,39 @@ const logoutUser = async function (req, res) {
   }
 };
 
+const changePassword = async function (req, res) {
+  const { newPassword } = req.body;
+  console.log("change password is called: ", newPassword);
+
+  if (!newPassword) {
+    return res.status(400).json({
+      error: "New password is required.",
+    });
+  }
+
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({
+        error: "User not found.",
+      });
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    return res.status(200).json({
+      message: "Password updated successfully.",
+    });
+  } catch (err) {
+    console.error("Error while changing password: ", err);
+    return res.status(500).json({
+      error: "Internal server error.",
+    });
+  }
+};
+
 const redirectingUser = async function (req, res) {
   try {
     return res.status(200).json(new ApiResponse(200, req.user));
@@ -377,4 +410,5 @@ export {
   sendMail,
   sendGoogleResponse,
   sendGoogleLoginResponse,
+  changePassword,
 };

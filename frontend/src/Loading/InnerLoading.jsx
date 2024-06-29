@@ -24,7 +24,7 @@ const LoaderContainer = styled.div`
   position: fixed;
   width: 100vw;
   top: 0;
-  z-index: 2000;
+  z-index: 2001;
   display: ${({ innerloadershow }) =>
     innerloadershow === "true" ? "flex" : "none"};
   flex-direction: column;

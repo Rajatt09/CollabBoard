@@ -74,7 +74,7 @@ const NavBar = ({ openModal }) => {
   return (
     <>
       <NavContainer>
-        <Brand href="#home">CollabBoard</Brand>
+        <Brand href="#home">Collaber</Brand>
         <NavLinks>
           {!userinfo.show ? (
             <SignInButton onClick={openModal}>Sign Up</SignInButton>

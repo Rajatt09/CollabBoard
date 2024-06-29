@@ -5,10 +5,41 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: white;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  @media screen and (max-width: 768px) {
+    background-color: white;
+  }
 }
+
+::-webkit-scrollbar-track {
+  border: none;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #e3f2fd;
+  border-radius: 35px;
+  /* border-bottom-left-radius: 35px;
+  border-bottom-right-radius: 35px; */
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 10px;
+  /* width: 10px; */
+  /* display: none; */
+}
+
+/* ::-webkit-scrollbar:vertical {
+  width: 10px;
+} */

@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  name: "",
   email: "",
   phone: "",
   joined: "",
@@ -10,6 +11,9 @@ const initialState = {
     show: false,
     type: "",
     message: "",
+  },
+  meeting: {
+    id: "",
   },
 };
 
@@ -50,6 +54,10 @@ export const userinfoSlice = createSlice({
       if (joined !== undefined) state.joined = handleDate(joined);
       state.show = show;
     },
+    updateUserName: (state, action) => {
+      const { name } = action.payload;
+      state.name = name;
+    },
     updateLoader: (state, action) => {
       const { loader } = action.payload;
       state.loader = loader;
@@ -60,10 +68,20 @@ export const userinfoSlice = createSlice({
       state.notification.type = type;
       state.notification.message = message;
     },
+    updateMeetinginfo: (state, action) => {
+      const { host } = action.payload;
+
+      state.meeting.id = host;
+    },
   },
 });
 
-export const { updateUserinfo, updateLoader, updateNotification } =
-  userinfoSlice.actions;
+export const {
+  updateUserinfo,
+  updateLoader,
+  updateNotification,
+  updateMeetinginfo,
+  updateUserName,
+} = userinfoSlice.actions;
 
 export default userinfoSlice.reducer;
