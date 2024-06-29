@@ -31,7 +31,7 @@ async function ApiCall(url, httpMethod, data, dispatch) {
         );
         console.error("Error from backend:", errorMessage);
         checkmessage = errorMessage;
-        // window.location.href = "/";
+        window.location.href = "/";
       }
     } else if (error.request) {
       console.error("No response received from server");

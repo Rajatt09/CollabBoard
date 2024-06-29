@@ -43,7 +43,6 @@ const Board = () => {
   const userinfo = useSelector((state) => state.userinfo);
   const currentUrl = window.location.href;
   const lastUrlPart = currentUrl.split("/").pop();
-  console.log("url is : ", lastUrlPart);
 
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
@@ -276,13 +275,7 @@ const Board = () => {
       );
       return;
     }
-    dispatch(
-      updateNotification({
-        show: true,
-        type: "success",
-        message: `Pages saved as PDF.`,
-      })
-    );
+
     dispatch(
       updateLoader({
         loader: true,

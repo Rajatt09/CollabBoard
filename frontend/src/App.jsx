@@ -65,7 +65,7 @@ function App() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         > */}
-      {!loading ? <NavBar openModal={openModal} /> : null}
+      <NavBar openModal={openModal} />
       <Routes>
         <Route
           path="/"
