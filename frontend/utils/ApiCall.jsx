@@ -16,22 +16,22 @@ async function ApiCall(url, httpMethod, data, dispatch) {
       return response;
     }
   } catch (error) {
-    dispatch(
-      updateUserinfo({
-        email: "",
-        phone: "",
-        joined: "",
-        show: false,
-      })
-    );
     console.error("Error in API call:", error);
     if (error.response) {
       const errorMessage = error.response.data.message;
       let checkmessage;
       if (errorMessage === "Unauthorized request" || "Invalid Access Token") {
+        dispatch(
+          updateUserinfo({
+            email: "",
+            phone: "",
+            joined: "",
+            show: false,
+          })
+        );
         console.error("Error from backend:", errorMessage);
         checkmessage = errorMessage;
-        // window.location.href = "/";
+        window.location.href = "/";
       }
     } else if (error.request) {
       console.error("No response received from server");
