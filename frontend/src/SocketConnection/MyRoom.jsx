@@ -412,7 +412,7 @@ const MyRoom = () => {
   };
 
   const handleCallAccepted = async ({ ans, email }) => {
-    console.log("call got accepted", ans);
+    console.log("call got accepted", ans, " and email is: ", email);
 
     const peer = peers.current[email];
 
@@ -488,7 +488,7 @@ const MyRoom = () => {
   ]);
 
   const handleNegotiation = async (email, myEmail) => {
-    console.log("handle nego called with remote id: ");
+    console.log("handle nego called with remote id: ", email);
     const peer = peers.current[email];
     const localOffer = await peer.createOffer();
     await peer.setLocalDescription(new RTCSessionDescription(localOffer));
