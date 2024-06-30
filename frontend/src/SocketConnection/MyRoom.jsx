@@ -354,6 +354,7 @@ const MyRoom = () => {
     console.log("incomming call with myEmail: ", myEmail);
 
     const peer = createPeerConnection();
+    console.log("CREATE PEER CONNECTION CALLED 2: ", peer);
     peers.current[email] = peer;
 
     peer.addEventListener("track", (event) => handleTrackEvent(event, email));
@@ -516,6 +517,7 @@ const MyRoom = () => {
   const handleUserRequest = async (id, roomId, name, email, status) => {
     if (status == "accept") {
       const peer = createPeerConnection();
+      console.log("CREATE PEER CONNECTION CALLED 1: ", peer);
       peers.current[email] = peer;
 
       const offer = await peer.createOffer();
