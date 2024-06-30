@@ -27,7 +27,7 @@ import { MdCallEnd, MdStopScreenShare } from "react-icons/md";
 import ApiCall from "../../utils/ApiCall";
 
 const createPeerConnection = () => {
-  return new RTCPeerConnection({
+  const peer = new RTCPeerConnection({
     iceServers: [
       {
         urls: [
@@ -37,6 +37,21 @@ const createPeerConnection = () => {
       },
     ],
   });
+
+  peer.onicecandidate = (event) => {
+    if (event.candidate) {
+      console.log("New ICE candidate: ", event.candidate);
+    } else {
+      console.log("All ICE candidates have been sent");
+    }
+  };
+
+  // Add ICE connection state change listener
+  peer.oniceconnectionstatechange = () => {
+    console.log("ICE connection state: ", peer.iceConnectionState);
+  };
+
+  return peer;
 };
 
 const MyRoom = () => {
