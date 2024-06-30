@@ -36,6 +36,10 @@ const createPeerConnection = () => {
         ],
       },
     ],
+    iceTransportPolicy: "relay",
+    bundlePolicy: "balanced",
+    rtcpMuxPolicy: "require",
+    iceCandidatePoolSize: 0,
   });
 };
 
