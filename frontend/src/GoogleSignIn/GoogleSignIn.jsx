@@ -105,7 +105,7 @@ const GoogleLogIn = ({ closeModal }) => {
         updateNotification({
           show: true,
           type: "success",
-          message: "You have successfully logged in.",
+          message: "Log in successful.",
         })
       );
       closeModal();

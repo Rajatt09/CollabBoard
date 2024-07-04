@@ -3,7 +3,11 @@ import styled, { keyframes } from "styled-components";
 import { io } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { updateMeetinginfo, updateUserName } from "../../utils/counterSlice.js";
+import {
+  updateMeetinginfo,
+  updateUserName,
+  updateNotification,
+} from "../../utils/counterSlice.js";
 import { motion, AnimatePresence } from "framer-motion";
 import animationData8 from "../assets/animatedCartoon8.json";
 import { Player } from "@lottiefiles/react-lottie-player";
@@ -34,7 +38,17 @@ const Lobby = () => {
     if (admin) {
       navigate(`/collabmeet/${roomId}`, { state: { myOffer } });
     } else {
-      setIsAdmin(false);
+      if (roomId && roomId == "not valid") {
+        dispatch(
+          updateNotification({
+            show: true,
+            type: "failure",
+            message: `Meeting Id not valid.`,
+          })
+        );
+      } else {
+        setIsAdmin(false);
+      }
     }
   };
 
@@ -173,8 +187,8 @@ const Lobby = () => {
   return (
     <LobbyContainer>
       {createParticles()}
-      <ResponsivePlayer autoplay loop src={animationData8} />
-      <ResponsivePlayer1 autoplay loop src={animationData8} />
+      {/* <ResponsivePlayer autoplay loop src={animationData8} />
+      <ResponsivePlayer1 autoplay loop src={animationData8} /> */}
       {!isAdmin && (
         <PleaseWaitOverlay>
           <Spinner>
@@ -185,80 +199,257 @@ const Lobby = () => {
           <LoaderText>Waiting for host permission</LoaderText>
         </PleaseWaitOverlay>
       )}
-      <Card
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <Title>Join a Meeting</Title>
-        <Form>
-          <FormGroup>
-            <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              type="text"
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Enter your name"
-            />
-            <Text2 error={errors.name1error}>{errors.name1error}</Text2>
-          </FormGroup>
+      {/* {window.innerWidth < 756 ? ( */}
 
-          <FormGroup>
-            <Label htmlFor="meetingId">Meeting ID</Label>
-            <Input
-              id="meetingId"
-              type="text"
-              onChange={(e) => setRoomId(e.target.value)}
-              placeholder="Enter Meeting ID"
-            />
-            <Text2 error={errors.meetingerror}>{errors.meetingerror}</Text2>
-          </FormGroup>
-          <ButtonContainer>
-            <JoinButton onClick={handleJoinRoom}>Join Meeting</JoinButton>
-            <CreateButton onClick={handleModalToggle}>
-              Create Meeting
-            </CreateButton>
-          </ButtonContainer>
-        </Form>
-      </Card>
-      <AnimatePresence>
-        {isModalOpen && (
-          <Modal
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-evenly",
+          backgroundColor: window.innerWidth > 756 ? "#f0f2f5" : "",
+          borderRadius: "20px",
+          overflow: "auto",
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        <div
+          style={{
+            fontSize: window.innerWidth < 756 ? "1.8rem" : "2.8rem",
+            color: window.innerWidth < 756 ? "white" : "#3f51b5",
+            textAlign: "center",
+            fontWeight: "bold",
+            padding: window.innerWidth < 756 ? "25px 0px 30px 0px " : "0px",
+          }}
+        >
+          COLLAB-MEET LOBBY
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            backgroundColor: window.innerWidth > 756 ? "#f0f2f5" : "",
+            borderRadius: "20px",
+            overflow: "scroll",
+            position: "relative",
+            flexDirection: window.innerWidth < 756 ? "column-reverse" : "",
+            width: "100%",
+            // height: "100%",
+          }}
+        >
+          {" "}
+          <Notes
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
           >
-            <ModalContent
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 100 }}
+            <Section>
+              <SectionTitle>Join a Meeting as an Attendee</SectionTitle>
+              <SectionContent>
+                <ul>
+                  <NoteItem>
+                    Enter the meeting ID provided by the host.
+                  </NoteItem>
+                  <NoteItem>
+                    Enter your name in the provided field to join the meet.
+                  </NoteItem>
+                  <NoteItem>
+                    Click on the "Join Meeting as Attendee" button.
+                  </NoteItem>
+                  <NoteItem>
+                    Wait for the host to grant you permission to join the
+                    meeting.
+                  </NoteItem>
+                  <NoteItem>
+                    Once granted, you'll be able to participate in the meeting.
+                  </NoteItem>
+                </ul>
+              </SectionContent>
+            </Section>
+
+            <Section>
+              <SectionTitle>Create a Meeting for Host</SectionTitle>
+              <SectionContent>
+                <ul>
+                  <NoteItem>
+                    Click on the "Create Meeting as Host" button to create and
+                    join the meeting as host.
+                  </NoteItem>
+                  <NoteItem>
+                    Enter your name in the provided field after clicking "Create
+                    Meeting as Host".
+                  </NoteItem>
+
+                  <NoteItem>
+                    The meeting ID will be automatically shared with you after
+                    joining the meeting.
+                  </NoteItem>
+                  <NoteItem>
+                    Share this meeting ID with participants you want to invite.
+                  </NoteItem>
+                  <NoteItem>
+                    Manage permissions and control who can join your meeting.
+                  </NoteItem>
+                </ul>
+              </SectionContent>
+            </Section>
+
+            {/* <Section>
+            <SectionTitle>Platform Features</SectionTitle>
+            <SectionContent>
+              <ul>
+                <NoteItem>
+                  Easy-to-use interface for creating and joining meetings.
+                </NoteItem>
+                <NoteItem>Real-time audio and video communication.</NoteItem>
+                <NoteItem>
+                  Secure and encrypted connections for all communications.
+                </NoteItem>
+                <NoteItem>
+                  Host controls to manage meeting participants.
+                </NoteItem>
+                <NoteItem>
+                  Responsive design for seamless use on both desktop and mobile
+                  devices.
+                </NoteItem>
+              </ul>
+            </SectionContent>
+          </Section> */}
+          </Notes>
+          <MeetingWrapper>
+            {" "}
+            <Card
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
             >
-              {" "}
-              <CloseButton onClick={handleModalToggle}>&times;</CloseButton>
-              <Title>Create a New Meeting</Title>
-              <ModalForm>
-                <ModalFormGroup>
-                  <Label htmlFor="modalName">Name</Label>
+              <Title>Join a Meeting</Title>
+              <Form>
+                <FormGroup>
+                  <Label htmlFor="name">Name</Label>
                   <Input
-                    id="modalName"
+                    id="name"
                     type="text"
-                    placeholder="Enter your name"
                     onChange={(e) => setName(e.target.value)}
+                    placeholder="Enter your name"
                   />
-                  <Text2 error={errors.nameerror}>{errors.nameerror}</Text2>
-                </ModalFormGroup>
-                <ModalButton onClick={createMeeting}>
-                  Create and Join
-                </ModalButton>
-              </ModalForm>
-            </ModalContent>
-          </Modal>
-        )}
-      </AnimatePresence>
+                  <Text2 error={errors.name1error}>{errors.name1error}</Text2>
+                </FormGroup>
+
+                <FormGroup>
+                  <Label htmlFor="meetingId">Meeting ID</Label>
+                  <Input
+                    id="meetingId"
+                    type="text"
+                    onChange={(e) => setRoomId(e.target.value)}
+                    placeholder="Enter Meeting ID"
+                  />
+                  <Text2 error={errors.meetingerror}>
+                    {errors.meetingerror}
+                  </Text2>
+                </FormGroup>
+                <ButtonContainer>
+                  <JoinButton onClick={handleJoinRoom}>
+                    Join Meeting as Attendee
+                  </JoinButton>
+                  <CreateButton onClick={handleModalToggle}>
+                    Create Meeting as Host
+                  </CreateButton>
+                </ButtonContainer>
+              </Form>
+            </Card>
+            <AnimatePresence>
+              {isModalOpen && (
+                <Modal
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <ModalContent>
+                    {" "}
+                    <CloseButton onClick={handleModalToggle}>
+                      &times;
+                    </CloseButton>
+                    <Title>Create a New Meeting</Title>
+                    <ModalForm>
+                      <ModalFormGroup>
+                        <Label htmlFor="modalName">Name</Label>
+                        <Input
+                          id="modalName"
+                          type="text"
+                          placeholder="Enter your name"
+                          onChange={(e) => setName(e.target.value)}
+                        />
+                        <Text2 error={errors.nameerror}>
+                          {errors.nameerror}
+                        </Text2>
+                      </ModalFormGroup>
+                      <ModalButton onClick={createMeeting}>
+                        Create and Join
+                      </ModalButton>
+                    </ModalForm>
+                  </ModalContent>
+                </Modal>
+              )}
+            </AnimatePresence>
+          </MeetingWrapper>
+        </div>
+      </div>
     </LobbyContainer>
   );
 };
+
+const Notes = styled(motion.div)`
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+  width: 60%;
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+`;
+
+const Section = styled.div`
+  margin-bottom: 1.5rem;
+`;
+
+const SectionTitle = styled.h3`
+  margin-bottom: 1rem;
+  color: #3f51b5;
+  font-size: 1.2rem;
+  font-weight: bold;
+`;
+
+const SectionContent = styled.div`
+  margin-bottom: 0.5rem;
+  color: #333;
+  line-height: 1.5;
+`;
+
+const NoteItem = styled.li`
+  color: #777;
+  margin-bottom: 0.5rem;
+`;
+
+const MeetingWrapper = styled.div`
+  // width: 45%;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  // padding: 1.4rem;
+  border-radius: 15px;
+  // background-color: green;
+  @media (max-width: 768px) {
+    margin-bottom: 20px;
+    width: 100%;
+  }
+`;
 
 const ResponsivePlayer = styled(Player)`
   position: absolute;
@@ -382,18 +573,19 @@ const CloseButton = styled.button`
 const Card = styled(motion.div)`
   background: white;
   padding: 2rem;
+  // position: relative;
+  // z-index: 400;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   text-align: center;
   max-width: 400px;
   width: 100%;
-  margin-top: 1rem;
 `;
 
 const Title = styled.h2`
   text-align: center;
-  margin-bottom: 2rem;
-  margin-top: 1rem;
+  margin-bottom: 20px;
+  margin-top: 5px;
   color: #3f51b5;
   font-weight: 600;
 `;
@@ -430,14 +622,12 @@ const Input = styled.input`
   }
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-`;
+const ButtonContainer = styled.div``;
 
 const JoinButton = styled.button`
   flex: 1;
+  width: 100%;
+  margin-top: 15px;
   padding: 0.75rem;
   border: none;
   border-radius: 10px;
@@ -454,6 +644,8 @@ const JoinButton = styled.button`
 
 const CreateButton = styled.button`
   flex: 1;
+  width: 100%;
+  margin-top: 15px;
   padding: 0.75rem;
   border: 2px solid #3f51b5;
   border-radius: 10px;

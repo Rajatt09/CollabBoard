@@ -110,7 +110,16 @@ const HelpPage = () => {
               </p>
               <ContactInfo>
                 <ContactItem>
-                  <FiMail /> Email:{" "}
+                  <p
+                    style={{
+                      display: "flex",
+                      gap: "5px",
+                      alignItems: "center",
+                    }}
+                  >
+                    {" "}
+                    <FiMail /> Email
+                  </p>
                   <a
                     style={{ textDecoration: "none" }}
                     href="mailto:support@example.com"
@@ -309,7 +318,7 @@ const ContactItem = styled.div`
   font-size: 1.2em;
   display: flex;
   align-items: center;
-  gap: 10px;
+  flex-direction: column;
 
   a {
     color: #fff;

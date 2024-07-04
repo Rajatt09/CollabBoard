@@ -39,8 +39,10 @@ const socketConnection = async (server) => {
             userId: socket.id,
             roomId,
           });
+          socket.emit("joined-room", { admin: false });
+        } else {
+          socket.emit("joined-room", { roomId: "not valid", admin: false });
         }
-        socket.emit("joined-room", { admin: false });
       } else {
         hostId = socket.id;
         room = roomId;

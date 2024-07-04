@@ -121,22 +121,31 @@ const Dashboard = ({ openModal }) => {
           <PasswordModalOverlay isclosing={isClosing}>
             <PasswordModal>
               <CloseButton onClick={closePasswordModal}>&times;</CloseButton>
-              <h2 style={{ textAlign: "center", color: "#3f51b5" }}>
+              <h2
+                style={{
+                  textAlign: "center",
+                  color: "#3f51b5",
+                  marginBottom: "28px",
+                  marginTop: "15px",
+                }}
+              >
                 Change Password
               </h2>
               <form onSubmit={handlePasswordChange}>
                 <InputWrapper>
-                  <label>New Password</label>
-                  <input
+                  {/* <label>New Password</label> */}
+                  <Input
                     type="text"
+                    placeholder="New Password"
                     name="newPassword"
                     onChange={handleChange}
                   />
                 </InputWrapper>
                 <InputWrapper>
-                  <label>Confirm New Password</label>
-                  <input
+                  {/* <label>Confirm New Password</label> */}
+                  <Input
                     type="text"
+                    placeholder="Confirm new Password"
                     name="confirmPassword"
                     onChange={handleChange}
                   />
@@ -281,16 +290,28 @@ const Dashboard = ({ openModal }) => {
           <span>Settings</span>
         </BottomNavItem>
         {/* <BottomNavItem
-          active={activeIcon === "logout"}
-          onClick={() => handleIconClick("logout")}
-        >
-          <FiLogOut />
-          <span>Logout</span>
-        </BottomNavItem> */}
+    active={activeIcon === "logout"}
+    onClick={() => handleIconClick("logout")}
+  >
+    <FiLogOut />
+    <span>Logout</span>
+  </BottomNavItem> */}
       </BottomNav>
     </div>
   );
 };
+
+const Input = styled.input`
+  padding: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  background-color: #c5cae9;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+`;
 
 const Text2 = styled.p`
   color: red;
@@ -545,7 +566,7 @@ const PasswordModalOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: ${({ isclosing }) => (isclosing ? fadeOut : fadeIn)} 0.3s
+  animation: ${({ isclosing }) => (isclosing ? fadeOut : fadeIn)} 0.4s
     ease-in-out;
   z-index: 1000;
 `;
@@ -555,7 +576,7 @@ const PasswordModal = styled.div`
   position: relative;
   padding: 2rem;
   margin: 0px 25px;
-  border-radius: 10px;
+  border-radius: 15px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
@@ -571,7 +592,7 @@ const PasswordModal = styled.div`
 const CloseButton = styled.span`
   position: absolute;
   top: 0px;
-  right: 12px;
+  right: 15px;
   font-size: 2rem;
   font-weight: bold;
   cursor: pointer;
@@ -579,34 +600,20 @@ const CloseButton = styled.span`
 `;
 
 const InputWrapper = styled.div`
-  margin-bottom: 1rem;
-
-  label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #555;
-  }
-
-  input {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-  }
+  margin-bottom: 10px;
 `;
 
 const SubmitButton = styled.button`
   background-color: #3f51b5;
   color: white;
-  padding: 0.75rem 1.5rem;
+  padding: 1rem 2rem;
   border: none;
-  border-radius: 5px;
-  font-size: 1rem;
+  border-radius: 10px;
+  font-size: 1.2rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
   width: 100%;
-  margin-top: 1rem;
+  margin-top: 5px;
 
   &:hover {
     background-color: #303f9f;
